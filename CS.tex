@@ -20,41 +20,107 @@
 \usepackage{mathtools}
 
 \usepackage{amssymb}
+\usepackage{listings}
+\usepackage{fontspec}
+\newfontfamily{\braille}{Apple Braille}
+
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \DeclarePairedDelimiter\set\{\}
 
-\title{Universal simulation of Turing machine in $\mathcal{O}(T\log T)$-time}
+\title{Efficient Universal Turing machine simulation in $\mathcal{O}(T\log T)$-time\footnotemark}
 \author{Kenenbek Arzymatov}
-
 \begin{document}
 \maketitle
 
 \section{Introduction}
-\subsection{Turing Machine. }
+\subsection{Turing Machine}
 
-\textbf{Definition}. Formally, a TM $M$ is described by a tuple $(\Gamma, Q, \delta)$ containing:
+
+\footnotetext{Presentation slides are accessible \href{https://docs.google.com/presentation/d/1NKgTRBZZgML2MXeKdbmro6EjdUyeMWOgLDkzd1AltRQ/edit?usp=sharing}{here}}
+
+\par 
+It is possible to think about a Turing Machine (TM) as model of simple computer. Due to its simplicity computer scientists and mathematicians can use it to study the theoretical properties of computation. For instance, they managed to discover that no matter how powerful computer is, it is always achievable to translate its programs to work on the Turing Machine or that all programming languages can do the same things. 
+
+\par
+One of the central concepts in compution is "algorithm" because algorithm is a way for solving a particular problem.  
+Let $f$ be a function that takes a string of zeros and ones (element of the set
+$\{0, 1\}^{∗}$ ), here \textit{star}-operation means: 
+$$A^* = \{x_0x_1\dots x_k | k \geq 0 \text{ and each }x_i \in A \}$$
+ and outputs either 0 or 1. An algorithm for computing $f$ is a set of mechanical
+rules, such that by following them it is possible to compute $f (x)$ given any input $x \in \{0, 1\}^{∗}$ . The
+set of rules being followed is fixed (the same rules must work for all possible inputs)
+though each rule in this set may be applied arbitrarily many times. Each rule involves
+one or more of the following "elementary" operations: 
 
 \begin{itemize}
-\item A finite set  of the symbols that $M$’s tapes can contain. We assume that  contains a
-designated “blank” symbol, denoted  $\square$; a designated “start” symbol, denoted  $\rhd$; and
-the numbers 0 and 1. We call  the alphabet of M.
-\item A finite set $Q$ of possible states $M$’s register can be in. We assume that $Q$ contains a
-designated start state, denoted $q_{start}$ , and a designated halting state, denoted $q_{halt}$
-\item A function $\delta : Q \times \Gamma^{k} → Q \times \Gamma^{k−1} \times \set*{L, S, R}^{k}$ , where $k ≥ 2$, describing the rules $M$
-use in performing each step. This function is called the transition function of $M$.
+\item Read a symbol on the inpute tape 
+\item Read a symber on the work tape if TM has it 
+\item Write a symbol to the work tape 
+\item Eiter stop and output 0 or 1, or choose a new rule for the next step.
 \end{itemize}
 
-\textbf{Statements}:
+\par 
+The \textit{running time} of an algorithm is the number of these basic operations performed. It's
+measured in asymptotic terms. For example, if a machine runs in time $T(n)$ then it executes at most $T(n)$ basic operations time on inputs of length $n$. 
+
+\par 
+Figure \ref{fig:tm} is an illustration for 3-tape TM with an input, work and output tapes.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{tm.png}
+\caption{Example of Turing machine with three tapes: an input tape, a work tape and an output tape.}
+\label{fig:tm}
+\end{figure}
+
+
+\textbf{Definition}. TM $M$ is described by a tuple $(\Gamma, Q, \delta)$ containing:
+
+\begin{itemize}
+\item A finite set  of the symbols that $M$’s tapes can contain. It contains a
+designated "blank" symbol, denoted  $\square$; a designated "start" symbol, denoted  $\rhd$; and
+the numbers 0 and 1. This set is called the alphabet of TM $M$.
+\item A finite set $Q$ of possible states $M$’s register can be in. $Q$ contains a
+designated start state, denoted $q_{start}$ , and a designated halting state, denoted $q_{halt}$
+\item A function $\delta : Q \times \Gamma^{k} → Q \times \Gamma^{k−1} \times \set*{L, S, R}^{k}$ , where $k ≥ 2$, describing the rules $M$
+use in performing each step; $L, S, R$ stand for move $L$eft, $S$tay in place or move $R$ight accordingly. This function is called the transition function of $M$.
+\end{itemize}
+
+\textbf{Useful statements}:
 \begin{enumerate}
-\item Behavior of a Turing machine is determined by its transition function.
+\item Behavior of a Turing machine is determined by its transition function. For example,
+$\delta(q, (\sigma_1, \dots, \sigma_k)) = (q', \sigma^{'}_2, \dots, \sigma^{'}_k), z) $ where $z \in \{L, S, R\}^{k}$ like $LS\dots SR$ or $RR\dots LS$. For example, if TM has 3 work tapes and output tape $z$ can be like $SRRR$ which means stay in place for the first tape and move heads right for the other ones. 
+\item  An algorithm can be represented as a bit string (consisting only of zeros and ones) once we decide on some encoding. For example, there is a function which takes an integer number and return an incremented one:
+\begin{lstlisting}[language=C]
+int function (int x){
+   x = x + 1; 
+   return x**2; 
+}
+\end{lstlisting}
+
+The code above can be encoded as:
+{\obeylines\braille
+⡂⡀⣀⢀⣄⡀⣰⡉⡀⠀⡀⡀⣀⠀⢀⣀⢀⣄⡀⡂⢀⣀⡀⢀⢀⡀⠀⡰⣀⠀⣀⠀⡂⡀⣀⢀⣄⡰⡀⢠⠂
+⡇⡏⠀⡇⡇⠀⢸⠀⡇⢀⡇⡏⠀⡇⣏⠀⠀⡇⠀⡇⣏⠀⣹⢸⠁⢸⠀⡇⢈⠷⡁⠀⡇⡏⠀⡇⡇⠀⡇⢼⠀
+⠁⠁⠀⠁⠈⠁⠈⠀⠈⠁⠁⠁⠀⠁⠈⠉⠀⠈⠁⠁⠈⠉⠁⠈⠀⠈⠀⠱⠉⠀⠉⠀⠁⠁⠀⠁⠈⠱⠁⠘⠄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢤⡀⡤⠀⣀⣀⣀⠀⢤⡀⡤⠀⠀⢰⠀⠀⢹⠠⠀
+⠀⠀⠀⣠⠛⣄⠀⠒⠒⠒⠀⣠⠛⣄⠀⠉⢹⠉⠁⢸⢀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀
+⠀⠀⠀⣄⢄⠤⢄⢴⠤⢠⠀⢠⢠⡠⢠⡠⢄⠀⢤⡀⡤⢺⡖⠐⣷⠂⠊⢉⡆
+⠀⠀⠀⡇⠸⣍⣉⠸⣀⠸⣀⢼⢸⠀⢸⠀⢸⠀⣠⠛⣄⠀⠀⠀⠀⠀⣴⣋⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+⢱⠀
+⢸⠁
+⠊
+}
 \item Every string in $\{0, 1\}^{*}$ represents some Turing machine.
 \item Every TM is represented by infinitely many strings.
 \end{enumerate}
 
-\textbf{Definition}.We denote by $M_\alpha$ the machine whose representation as a bit string is $\alpha$. An algorithm (i.e., a machine) can be represented as a bit string once we decide on
-some canonical encoding.
+\textbf{Definition}.We denote by $M_\alpha$ the machine whose representation as a bit string is $\alpha$. 
 
 \textbf{Definition}.The running time is the number of these basic operations performed. We
 measure it in asymptotic terms, so we say a machine runs in time $T(n)$ if it performs at
@@ -265,5 +331,84 @@ of the parallel tapes, at most a $1/2^i$ fraction of the total number of shifts 
 $i$. Since we perform at most $T$ shifts, and the highest possible index is $\log T$, the total
 work spent in shifting $U$’s k parallel tapes in the course of simulating $T$ steps of $M$ is
 $$  \mathcal{O}( k \cdot \sum_{i=1}^{\log T} \frac{T}{2^{i-1}} 2^{i}) = \mathcal{O}(T\log T).\blacksquare $$
+
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{ex1.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{ex2.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{ex3.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{ex4.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al1.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al2.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al3.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al4.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al5.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al6.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=10cm]{al7.png}
+\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
+\label{fig:scetch2}
+\end{figure}
+
 
 \end{document}
