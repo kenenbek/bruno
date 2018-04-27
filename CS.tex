@@ -22,7 +22,7 @@
 \usepackage{amssymb}
 \usepackage{listings}
 \usepackage{fontspec}
-\newfontfamily{\braille}{Apple Braille}
+\newfontfamily{\braille}{DejaVu Serif}
 
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
@@ -83,7 +83,7 @@ designated "blank" symbol, denoted  $\square$; a designated "start" symbol, deno
 the numbers 0 and 1. This set is called the alphabet of TM $M$.
 \item A finite set $Q$ of possible states $M$’s register can be in. $Q$ contains a
 designated start state, denoted $q_{start}$ , and a designated halting state, denoted $q_{halt}$
-\item A function $\delta : Q \times \Gamma^{k} → Q \times \Gamma^{k−1} \times \set*{L, S, R}^{k}$ , where $k ≥ 2$, describing the rules $M$
+\item A function $\delta : Q \times \Gamma^{k} → Q \times \Gamma^{k−1} \times \set*{L, S, R}^{k}$ , where $k \geq 2$, describing the rules $M$
 use in performing each step; $L, S, R$ stand for move $L$eft, $S$tay in place or move $R$ight accordingly. This function is called the transition function of $M$.
 \end{itemize}
 
@@ -91,7 +91,7 @@ use in performing each step; $L, S, R$ stand for move $L$eft, $S$tay in place or
 \begin{enumerate}
 \item Behavior of a Turing machine is determined by its transition function. For example,
 $\delta(q, (\sigma_1, \dots, \sigma_k)) = (q', \sigma^{'}_2, \dots, \sigma^{'}_k), z) $ where $z \in \{L, S, R\}^{k}$ like $LS\dots SR$ or $RR\dots LS$. For example, if TM has 3 work tapes and output tape $z$ can be like $SRRR$ which means stay in place for the first tape and move heads right for the other ones. 
-\item  An algorithm can be represented as a bit string (consisting only of zeros and ones) once we decide on some encoding. For example, there is a function which takes an integer number and return an incremented one:
+\item  An algorithm (machine) can be represented as a bit string (consisting only of zeros and ones) by the means of encoding. For example, there is a function which takes an integer number and return an incremented one:
 \begin{lstlisting}[language=C]
 int function (int x){
    x = x + 1; 
@@ -99,141 +99,39 @@ int function (int x){
 }
 \end{lstlisting}
 
-The code above can be encoded as:
+The code above can be encoded with Braille font  (just for illustrative purposes only):
 {\obeylines\braille
 ⡂⡀⣀⢀⣄⡀⣰⡉⡀⠀⡀⡀⣀⠀⢀⣀⢀⣄⡀⡂⢀⣀⡀⢀⢀⡀⠀⡰⣀⠀⣀⠀⡂⡀⣀⢀⣄⡰⡀⢠⠂
 ⡇⡏⠀⡇⡇⠀⢸⠀⡇⢀⡇⡏⠀⡇⣏⠀⠀⡇⠀⡇⣏⠀⣹⢸⠁⢸⠀⡇⢈⠷⡁⠀⡇⡏⠀⡇⡇⠀⡇⢼⠀
-⠁⠁⠀⠁⠈⠁⠈⠀⠈⠁⠁⠁⠀⠁⠈⠉⠀⠈⠁⠁⠈⠉⠁⠈⠀⠈⠀⠱⠉⠀⠉⠀⠁⠁⠀⠁⠈⠱⠁⠘⠄
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⢤⡀⡤⠀⣀⣀⣀⠀⢤⡀⡤⠀⠀⢰⠀⠀⢹⠠⠀
-⠀⠀⠀⣠⠛⣄⠀⠒⠒⠒⠀⣠⠛⣄⠀⠉⢹⠉⠁⢸⢀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀
+⠁⠁⠀⠁⠈⠁⠈⠀⠈⠁⠁⠁⠀⠁⠈⠉⠀⠈⠁⠁⠈⠉⠁⠈⠀⠈⠀⠱⠉⠀⠉⠀⠁⠁⠀⠁⠈⠱⠁⠘⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢤⡀⡤⠀⣀⣀⣀⠀⢤⡀⡤⠀⠀⢰⠀⠀⢹⠀
+⠀⠀⠀⣠⠛⣄⠀⠒⠒⠒⠀⣠⠛⣄⠀⠉⢹⠉⠁⢸⠀
 ⠀⠀⠀⣄⢄⠤⢄⢴⠤⢠⠀⢠⢠⡠⢠⡠⢄⠀⢤⡀⡤⢺⡖⠐⣷⠂⠊⢉⡆
 ⠀⠀⠀⡇⠸⣍⣉⠸⣀⠸⣀⢼⢸⠀⢸⠀⢸⠀⣠⠛⣄⠀⠀⠀⠀⠀⣴⣋⡀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
 ⢱⠀
 ⢸⠁
 ⠊
 }
+
+The result of converting the dots to ones and the blanks to zeros is the bitstring. 
+
+$\underbrace{1000010011001011111001000011111100010001111010 \dots 101001001011010011}_\text{length}$
+
 \item Every string in $\{0, 1\}^{*}$ represents some Turing machine.
+\item An algorithm/machine can be used as a possible input
+to another algorithm — this makes the boundary between input, software, and hardware
+very thin. 
 \item Every TM is represented by infinitely many strings.
+\item $M_\alpha$ is the TM whose representation as a bit string is $\alpha$. 
 \end{enumerate}
 
-\textbf{Definition}.We denote by $M_\alpha$ the machine whose representation as a bit string is $\alpha$. 
-
-\textbf{Definition}.The running time is the number of these basic operations performed. We
-measure it in asymptotic terms, so we say a machine runs in time $T(n)$ if it performs at
-most $T(n)$ basic operations time on inputs of length $n$.
-
-\textbf{Definition}.Let $f : \{0, 1\}^∗ → \{0, 1\}^∗$ and let $T : N → N$ be some functions, and let $M$ be a Turing
-machine. We say that M computes $f$ if for every $x ∈ \{0, 1\}∗$ , whenever $M$ is initialized
-to the start configuration on input x, then it halts with $f(x)$ written on its output tape.
-We say $M$ computes $f$ in $T(n)$-time if its computation on every input $x$ requires at
-most $T(|x|)$ steps.
-
-\subsection{EFFICIENCY AND RUNNING TIME}
-
-\textbf{Definition Computing a function and running time}
-
+\textbf{Definition.} 
 Let $f : \{0, 1\}^{∗} \rightarrow \{0, 1\}^{*}$ and let $T :  \mathbb{N} →  \mathbb{N}$ be some functions, and let $M$ be a Turing
 machine. We say that $M$ computes $f$ if for every $x \in \{0, 1\}^{*}$ , whenever $M$ is initialized
 to the start configuration on input $x$, then it halts with $f(x)$ written on its output tape.
 We say $M$ computes $f$ in $T(n)$-time if its computation on every input $x$ requires at most $T(|x|)$ steps.
 
-\textbf{Time-constructible functions}
-
-A function $T : \mathbb{N} \rightarrow \mathbb{N}$ is time constructible if $T(n) \geq n$ and there is a TM $M$ that
-computes the function $x  \rightarrow  T(|x|)$  in time $T(n)$. (As usual,  $T(|x|)$  denotes the binary
-representation of the number $T(|x|).)$ Examples for time-constructible functions are $n, nlogn, n^2 , 2n $. Almost all functions encountered in this book will be time constructible,
-and we will restrict our attention to time bounds of this form. (Allowing time bounds
-that are not time constructible can lead to anomalous results.) The restriction $T(n) \geq n$
-is to allow the algorithm time to read its input.
-
-Most of the specific details of our definition of Turing machines are quite arbitrary. It is
-a simple exercise to see that most changes to the definition do not yield a substantially
-different model, since our model can simulate any of these new models. In context of
-computational complexity, however, we have to verify not only that one model can
-simulate another, but also that it can do so efficiently. Now we state a few results of this
-type, which ultimately lead to the conclusion that the exact model is unimportant if we
-are willing to ignore polynomial factors in the running time. Variations on the model
-studied include restricting the alphabet $\Gamma$ to be $\{0, 1, \square, \rhd \}$, restricting the machine to
-have a single work tape, or allowing the tapes to be infinite in both directions. All results
-in this section are proved sketchily—completing these sketches into full proofs.
-
-\paragraph{Claim}
-
-For every $f : \{0, 1\}^{∗} \rightarrow \{0, 1\}^{*}$ and time-constructible $T :  \mathbb{N} →  \mathbb{N}$ if $f$ is
-computable in time $T(n)$ by a TM $M$ using alphabet $\Gamma$, then it is computable in time $4 \log{|\Gamma|}T(n)$ by a TM $\widetilde{M}$ using the alphabet $\{0, 1, \square, \rhd \}$.
-
-\paragraph{Short proof}
-
-Let $M$ be a TM with alphabet $\Gamma$, $k$ tapes, and state set $Q$ that computes
-the function $f$ in $T(n)$ time. We describe an equivalent TM $\widetilde{M}$ computing $f$ with alphabet $\{0, 1, \square, \rhd \}$, $k$ tapes and a set $Q'$ of states. The idea behind the transformation is simple:
-One can encode any member of $\Gamma$ using $\log |\Gamma|$ bits. Thus, each of $\widetilde{M}$'s work tapes will
-simply encode one of $M$’s tapes: For every cell in $M$'s tape we will have log |$\Gamma$| cells in
-the corresponding tape of $\widetilde{M}$(see \ref{fig:scetch1}).
-
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=10cm]{scetch1.png}
-\caption{We can simulate a machine $M$ using the alphabet $\{\square, \rhd, a, b, ..., z \}$ by a machine $M'$ using $\{0, 1, \square, \rhd \}$ via encoding every tape cell of $M$ using five cells of $M'$.}
-\label{fig:scetch1}
-\end{figure}
-
-\par	
-To simulate one step of $M$, the machine $\widetilde{M}$ will (1) use $\log |\Gamma|$ steps to read from
-each tape the $\log |\Gamma|$ bits encoding a symbol of $\Gamma$, (2) use its state register to store the
-symbols read, (3) use $M$’s transition function to compute the symbols $M$ writes and $M$'s
-new state given this information, (4) store this information in its state register, and (5)
-use $\log |\Gamma|$ steps to write the encodings of these symbols on its tapes.
-\par 
-One can verify that this can be carried out if $\widetilde{M}$ has access to registers that can
-store $M$'s state, $k$ symbols in $\Gamma$, and a counter from 1 to $\log |\Gamma|$. Thus, there is such a
-machine $\widetilde{M}$ utilizing no more than $c|Q||\Gamma|^{k+1}$ states for some absolute constant $c$. (In
-general, we can always simulate several registers using one register with a larger state
-space. For example, we can simulate three registers taking values in the sets $A, B \text{ and } C$, respectively, with one register taking a value in the set $A \times B \times C$, which is of size $|A| |B| |C|$.)
-
-\subsection{Oblivious Turing machines}
-
-\paragraph{Claim}
-Define a single-tape Turing machine to be a TM that has only one read-write
-tape, that is used as input, work, and output tape. For every $f : \{0, 1\}^{∗} \rightarrow \{0, 1\}$ and
-time-constructible $T : \mathcal{N} \rightarrow \mathcal{N}$, if $f$ is computable in time $T(n)$ by a TM $M$ using $k$ tapes,
-then it is computable in time $5kT(n)^2$ by a single-tape TM  $\widetilde{M}$.
-
-\paragraph{Proof}
-Again the idea is simple: The TM $\widetilde{M}$ encodes $k$ tapes of $M$ on a single
-tape by using locations $1, k + 1, 2k + 1, ...$ to encode the first tape, locations $2, k +
-2, 2k + 2, ...$ to encode the second tape etc. (see Figure \ref{fig:scetch2}). For every symbol a in
-$M$'s alphabet, $\widetilde{M}$ will contain both the symbol $a$ and the symbol $a^\wedge$. In the encoding of
-each tape, exactly one symbol will be of the "$\wedge$ type", indicating that the corresponding
-head of $M$ is positioned in that location (see Figure \ref{fig:scetch2}). $\widetilde{M}$ will not touch the first
-$n + 1$ locations of its tape (where the input is located) but rather start by taking $\mathcal{O}(n^2)$
-steps to copy the input bit by bit into the rest of the tape, while encoding it in the
-above way.
-
-\par 
-To simulate one step of $M$, the machine $\widetilde{M}$ makes two sweeps of its work tape: First it sweeps the tape in the left-to-right direction and records to its register the $k$ symbols
-that are marked by "$\wedge$". Then $\widetilde{M}$ uses $M$'s transition function to determine the new state,
-symbols, and head movements and sweeps the tape back in the right-to-left direction
-to update the encoding accordingly. Clearly, $\widetilde{M}$ will have the same output as $M$. Also,
-since on $n$-length inputs $M$ never reaches more than location $T(n)$ of any of its tapes, $\widetilde{M}$ will never need to reach more than location $2n + kT(n) \leq (k + 2)T(n)$ of its work tape,
-meaning that for each of the at most $T(n)$ steps of $M$, $\widetilde{M}$ performs at most $5 \cdot k \cdot T(n)$
-work (sweeping back and forth requires about $4 \cdot k \cdot T(n)$ steps, and some additional
-steps may be needed for updating head movement and book keeping). $\blacksquare$
-
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=10cm]{s2.png}
-\caption{Simulating a machine $M$ with three tapes using a machine $\widetilde{M}$ with a single tape.}
-\label{fig:scetch2}
-\end{figure}
-
-With a bit of care, one can ensure that the proof of Claim 1.6 yields a TM $\widetilde{M}$ with the following property: Its head movements do not depend on the input but only depend on
-the input length. That is, every input $x \in \{0, 1\}^{∗}$ and $i \in \mathcal{N}$, the location of each of $M$’s
-heads at the ith step of execution on input $x$ is only a function of $|x|$ and $i$. A machine
-with this property is called oblivious, i.e it has following 
 
 \subsection{The universal Turing machine}
 \textbf{Definition}.There is a universal Turing machine $U$ that can simulate any other Turing machine given
@@ -244,42 +142,40 @@ Turing was the first to observe that general-purpose computers are possible, by 
 a universal Turing machine that can simulate the execution of every other TM $M$ given
 $M$’s description as input.
 
-But it is
-good to remember why it was once counterintuitive. The parameters of the universal
+\par 
+Nowadays people who has a programming background easily can understand that the same function can be implemented on any programming language. 
+But it is good to remember why it was once counterintuitive. The parameters of the universal
 TM are fixed—alphabet size, number of states, and number of tapes. The corresponding
 parameters for the machine being simulated could be much larger. The reason this is the ability to use encodings. Even if the universal TM has a
 very simple alphabet, this suffices to represent the other machine’s state and transition
 table on its tapes and then follow along in the computation step by step.
 
 \subsection{Efficient universal Turing machine}
-\subsubsection{Claim}
 \textbf{Theorem}.There exists a TM $U$ such that for every $x, \alpha \in \{0, 1\}^{*} , U(x, \alpha) = M_\alpha(x)$, where $M_\alpha$
 denotes the TM represented by $\alpha$.
 Moreover, if $M_\alpha$ halts on input x within T steps then $U(x, \alpha)$ halts within $CT \log{T}$ steps,
-where C is a number independent of $|x|$ and depending only on $M_\alpha$'s alphabet size,
+where $C$ is a number independent of $|x|$ and depending only on $M_\alpha$'s alphabet size,
 number of tapes, and number of states.
 
 \subsubsection{Proof}
-We show a universal $TM \; U$
-such that given an input $x$ and a description of a $TM \; M$ that halts on $x$ within $T$ steps,
-$U$ outputs $M(x)$ within $\mathcal{O}(T\log T)$ time (where the constants hidden in the $\mathcal{O}$ notation
-may depend on the parameters of the $TM \; M$ being simulated).
+The proof of the theorem is conducted in two steps:
 
-$U$ will use its input and output
-tape in the same way $M$ does and will also have extra work tapes to store $M$’s transition
-table and current state and to encode the contents of $M$’s work tapes.
+\begin{enumerate}
+\item Constructing of TM that works for quadratic time. Such machine $U$ has to accept bitstring representation $M_\alpha$, input $x$ and give an output $M(x)$.  
+\item Using ideas from a previous step, do a modification for TM such way that it work for $T \log{T}$ time.
+\end{enumerate}
 
-Now we show a way to encode all of M’s work tapes in a single tape of U, which
+\textfb{Part I.} For example, we have such TM $s$ as shown in th Figure ~ref. We know the content of all three work tapes in advance because $U$ as a first argument accepts representation of $M$.    Now we show a way to encode all of M’s work tapes in a single tape of U, which
 we call the main work tape of U. 
 Let $k$ be the number of tapes that $M$ uses (apart from its input and output tapes)
-and  its alphabet. We may assume that $U$ uses the
+and  its alphabet. We can assume that $U$ uses the
 alphabet $\Gamma^{k}$ (as this can be simulated with a overhead depending only on $k, |\Gamma|$). Thus
 we can encode in each cell of $U$’s main work tape $k$ symbols of $\Gamma$, each corresponding
 to a symbol from one of $M$'s tapes. This means that we can think of $U$’s main work tape
 not as a single tape but rather as $k$ parallel tapes. 
 
-\paragraph{Encoding \texorpdfstring{$M$}{}’s tapes on \texorpdfstring{$U$}{}’s tape}
-
+%\paragraph{Encoding \texorpdfstring{$M$}{}’s tapes on \texorpdfstring{$U$}{}’s tape}
+\textfb{Part II.}
 	We encode the information (the content of $M$'s work tapes) using “buffer zones”: Rather
 than having each of $U$’s parallel tapes correspond exactly to a tape of $M$, we add a
 special kind of blank symbol $\diamond$ to the alphabet of $U$’s parallel tapes with the semantics
